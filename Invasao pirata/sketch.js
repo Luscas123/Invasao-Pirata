@@ -8,8 +8,9 @@ var engine, world, ground;
 var backgroundimg;
 var tower, towerimg;
 var canhao, angulo;
-var bolaDeCanhao
 
+
+var vetorBolas =[];
 function preload() {
   backgroundimg = loadImage("./assets/background.gif");
   towerimg = loadImage("./assets/tower.png");
@@ -38,7 +39,7 @@ function setup() {
 
   canhao= new Cannon(180,110,130,100,angulo);
 
-  bolaDeCanhao= new CannonBall(canhao.x, canhao.y);
+  
 
   
   
@@ -58,13 +59,31 @@ function draw() {
   image(towerimg,tower.position.x, tower.position.y, 160,310);
   pop();
 
-  
+  for (var i=0; i<vetorBolas.length; i++){
+    cannonBallShow(vetorBolas[i], i);
+  }
+
   canhao.show();
-  bolaDeCanhao.show();
+  
   
 }
 function keyReleased(){
   if(keyCode===DOWN_ARROW){
-    bolaDeCanhao.shoot();
+    vetorBolas[vetorBolas.length-1].shoot();
   }
 }
+
+function keyPressed(){
+  if(keyCode===DOWN_ARROW){
+    var bolaDeCanhao;
+    bolaDeCanhao= new CannonBall(canhao.x+5, canhao.y+2);
+    vetorBolas.push(bolaDeCanhao);
+  }
+}
+
+function cannonBallShow(bola,indice){
+  if(bola){
+    bola.show();
+  }
+
+} 
