@@ -8,6 +8,10 @@ var engine, world, ground;
 var backgroundimg;
 var tower, towerimg;
 var canhao, angulo;
+//var barco;
+
+
+var barcos = [];
 
 
 var vetorBolas =[];
@@ -39,7 +43,7 @@ function setup() {
 
   canhao= new Cannon(180,110,130,100,angulo);
 
-  
+  //barco = new Boat(width - 79, height - 60, 170, 170, -80);
 
   
   
@@ -65,6 +69,11 @@ function draw() {
 
   canhao.show();
   
+  //Body.setVelocity(barco.body,{x: -1, y: 0});
+  //barco.show();
+
+  barcosShow();
+  
   
 }
 function keyReleased(){
@@ -87,3 +96,24 @@ function cannonBallShow(bola,indice){
   }
 
 } 
+function barcosShow(){
+  
+  if(barcos.length>0){
+    // usamos width - 300 para colarmos os barcos para surgirem em uma distancia de 300
+    if(barcos[barcos.length -1].body.position.x < width -300|| barcos[barcos.length -1] ===undefined ){
+      var posicoes=[-40,-60,-70,-20];
+      var posicao= random(posicoes);
+      var barco = new Boat(width +5, height - 60, 170, 170, posicao);
+    }
+    for (var i=0; i<barcos.length; i++){
+      if (barcos[i]){
+        Body.setVelocity(barcos[i].body,{x: -1, y: 0});
+        barcos[i].show();
+      }
+    }
+  
+  } else {
+      var barco = new Boat(width +5, height - 60, 170, 170, -80);
+      barcos.push(barco);
+  }
+}
