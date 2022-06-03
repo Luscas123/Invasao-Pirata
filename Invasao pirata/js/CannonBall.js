@@ -33,4 +33,12 @@ class CannonBall{
         Matter.Body.setStatic(this.body, false);
         Matter.Body.setVelocity(this.body,{x:velocity.x* (180/3.14), y:velocity.y*(180/3.4)})
     }
+
+    remove(i){
+        Body.setVelocity(this.body,{x:0, y:0});
+        setTimeout(()=>{
+            World.remove(world, this.body);
+            delete vetorBolas[i];
+        }, 1000);
+    }
 }

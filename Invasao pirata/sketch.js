@@ -65,6 +65,7 @@ function draw() {
 
   for (var i=0; i<vetorBolas.length; i++){
     cannonBallShow(vetorBolas[i], i);
+    colisaoComBarco(i);
   }
 
   canhao.show();
@@ -93,6 +94,9 @@ function keyPressed(){
 function cannonBallShow(bola,indice){
   if(bola){
     bola.show();
+    if(bola.body.position.x>width || bola.body.position.y> height -50){
+      bola.remove(indice);
+    }
   }
 
 } 
@@ -100,10 +104,11 @@ function barcosShow(){
   
   if(barcos.length>0){
     // usamos width - 300 para colarmos os barcos para surgirem em uma distancia de 300
-    if(barcos[barcos.length -1].body.position.x < width -300|| barcos[barcos.length -1] ===undefined ){
+    if(barcos[barcos.length - 1].body.position.x < width -300|| barcos[barcos.length -1] ===undefined ){
       var posicoes=[-40,-60,-70,-20];
       var posicao= random(posicoes);
       var barco = new Boat(width +5, height - 60, 170, 170, posicao);
+      barcos.push(barco);
     }
     for (var i=0; i<barcos.length; i++){
       if (barcos[i]){
@@ -115,5 +120,19 @@ function barcosShow(){
   } else {
       var barco = new Boat(width +5, height - 60, 170, 170, -80);
       barcos.push(barco);
+  }
+}
+
+function colisaoComBarco(index){
+  for (var i=0; i<barcos.length; i++){
+    if (vetorBolas[index] !== undefined && barcos[i] !== undefined){
+      var colisao = Matter.SAT.collides(vetorBolas[index].body, barcos[i].body);
+      if (colisao.collided){
+        barcos[i].remove(i);
+        World.remove(world, vetorBolas[index]);
+        delete vetorBolas[index];
+      }
+      
+    }
   }
 }
